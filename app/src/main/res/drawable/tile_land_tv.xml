@@ -4,15 +4,15 @@
         <shape android:shape="rectangle">
             <size
                 android:width="384dp"
-                android:height="256dp" />
+                android:height="216dp" />
             <solid android:color="?attr/tile_land_tv_bg" />
         </shape>
     </item>
 
     <item
-        android:bottom="60dp"
+        android:bottom="40dp"
         android:drawable="@drawable/ic_tv"
         android:left="124dp"
         android:right="124dp"
-        android:top="60dp" />
+        android:top="40dp" />
 </layer-list>

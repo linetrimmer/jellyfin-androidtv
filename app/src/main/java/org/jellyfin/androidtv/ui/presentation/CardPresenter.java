@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
@@ -356,6 +357,16 @@ public class CardPresenter extends Presenter {
                 } else if (url == null) {
                     Glide.with(mCardView.getContext())
                             .load(mDefaultCardImage)
+                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                            .into(mCardView.getMainImageView());
+                } else if (mItem.getBaseItemType() == BaseItemType.Episode) {
+                    mCardView.getMainImageView().setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    mCardView.getMainImageView().setBackground(ContextCompat.getDrawable(mCardView.getMainImageView().getContext(), R.drawable.black_card_border));
+                    Glide.with(mCardView.getContext())
+                            .load(url)
+                            .error(mDefaultCardImage)
+                            .placeholder(placeholder)
+                            .transition(DrawableTransitionOptions.withCrossFade(200))
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                             .into(mCardView.getMainImageView());
                 } else {
