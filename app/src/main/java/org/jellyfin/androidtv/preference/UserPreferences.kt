@@ -167,6 +167,11 @@ class UserPreferences(context: Context) : SharedPreferenceStore(
 		 * Enable series thumbnails in home screen rows
 		 */
 		var seriesThumbnailsEnabled = Preference.boolean("pref_enable_series_thumbnails", true)
+
+		/**
+		 * Hide thumbnail images for unwatched episodes
+		 */
+		var hideUnwatchedThumbnailsEnabled = Preference.boolean("pref_enable_hide_unwatched_thumbnails", false)
 	}
 
 	init {

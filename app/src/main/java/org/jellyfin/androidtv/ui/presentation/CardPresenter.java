@@ -343,7 +343,17 @@ public class CardPresenter extends Presenter {
 
         protected void updateCardViewImage(@Nullable String url, @Nullable Drawable placeholder) {
             try {
-                if (url == null) {
+                boolean hideUnwatchedThumbnails = get(UserPreferences.class).get(UserPreferences.Companion.getHideUnwatchedThumbnailsEnabled());
+                if (hideUnwatchedThumbnails && mItem.getBaseItemType() == BaseItemType.Episode
+                        && mItem.getBaseItem() != null && mItem.getBaseItem().getUserData() != null && !mItem.getBaseItem().getUserData().getPlayed()
+                        && !(mItem.getPreferParentThumb() && mItem.getBaseItem().getParentThumbImageTag() != null)) {
+                    Glide.with(mCardView.getContext())
+                            .load(placeholder)
+                            .placeholder(placeholder)
+                            .error(mDefaultCardImage)
+                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                            .into(mCardView.getMainImageView());
+                } else if (url == null) {
                     Glide.with(mCardView.getContext())
                             .load(mDefaultCardImage)
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)

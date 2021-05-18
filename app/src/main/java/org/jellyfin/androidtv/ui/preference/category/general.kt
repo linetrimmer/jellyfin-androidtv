@@ -53,6 +53,12 @@ fun OptionsScreen.generalCategory(
 	}
 
 	checkbox {
+		setTitle(R.string.lbl_hide_unwatched_thumbnails)
+		setContent(R.string.lbl_hide_unwatched_thumbnails_description)
+		bind(userPreferences, UserPreferences.hideUnwatchedThumbnailsEnabled)
+	}
+
+	checkbox {
 		setTitle(R.string.lbl_enable_seasonal_themes)
 		setContent(R.string.desc_seasonal_themes)
 		bind(userPreferences, UserPreferences.seasonalGreetingsEnabled)
