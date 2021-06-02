@@ -129,6 +129,7 @@ public class ExternalPlayerActivity extends FragmentActivity {
                 playNext();
             } else {
                 mItemsToPlay.remove(0);
+                mediaManager.getValue().setIsShuffling(false);
                 finish();
             }
         }
