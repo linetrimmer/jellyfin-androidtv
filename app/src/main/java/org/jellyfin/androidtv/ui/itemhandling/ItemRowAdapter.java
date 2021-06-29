@@ -119,6 +119,8 @@ public class ItemRowAdapter extends ArrayObjectAdapter {
     private boolean preferParentThumb = false;
     private boolean staticHeight = false;
 
+    private boolean homeSection = false;
+
     private Lazy<ApiClient> apiClient = inject(ApiClient.class);
     private Lazy<MediaManager> mediaManager = inject(MediaManager.class);
 
@@ -215,6 +217,11 @@ public class ItemRowAdapter extends ArrayObjectAdapter {
         queryType = QueryType.NextUp;
         this.preferParentThumb = preferParentThumb;
         this.staticHeight = true;
+    }
+
+    public ItemRowAdapter(NextUpQuery query, boolean preferParentThumb, Presenter presenter, ArrayObjectAdapter parent, boolean homeSection) {
+        this(query, preferParentThumb, presenter, parent);
+        this.homeSection = homeSection;
     }
 
     public ItemRowAdapter(SeriesTimerQuery query, Presenter presenter, ArrayObjectAdapter parent) {
@@ -1156,11 +1163,20 @@ public class ItemRowAdapter extends ArrayObjectAdapter {
                         adapter.clear();
                     }
                     int i = 0;
-                    for (BaseItemDto item : response.getItems()) {
-                        adapter.add(new BaseRowItem(i++, item, preferParentThumb, staticHeight));
+
+                    // Don't load Next Up home section if it's going to load all first episodes
+                    // This won't work if the server returned a result where the first item is a special that airs before S1:E1
+                    // This will also cause a false positive if the user has watched a special that airs before S1:E1
+                    if (!homeSection
+                        || !Integer.valueOf(1).equals(response.getItems()[0].getParentIndexNumber())
+                        || !Integer.valueOf(1).equals(response.getItems()[0].getIndexNumber())) {
+                        for (BaseItemDto item : response.getItems()) {
+                            adapter.add(new BaseRowItem(i++, item, preferParentThumb, staticHeight));
+                        }
+                        totalItems = response.getTotalRecordCount();
+                        setItemsLoaded(itemsLoaded + i);
                     }
-                    totalItems = response.getTotalRecordCount();
-                    setItemsLoaded(itemsLoaded + i);
+
                     if (i == 0) {
                         removeRow();
                         notifyRetrieveFinished();

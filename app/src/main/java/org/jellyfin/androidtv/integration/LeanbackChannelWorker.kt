@@ -185,7 +185,8 @@ class LeanbackChannelWorker(
 			userId = apiClient.userId,
 			imageTypeLimit = 1,
 			limit = 10,
-			fields = listOf(ItemFields.DATE_CREATED)
+			fields = listOf(ItemFields.DATE_CREATED),
+			disableFirstEpisode = true
 		).content
 	}
 
