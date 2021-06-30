@@ -29,7 +29,7 @@ import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.util.*
 
-class HomeFragment : StdRowsFragment(), AudioEventListener {
+class HomeFragment : StdRowsFragment(true), AudioEventListener {
 	private val apiClient by inject<ApiClient>()
 	private val mediaManager by inject<MediaManager>()
 	private val helper by lazy { HomeFragmentHelper(requireContext()) }
@@ -45,8 +45,8 @@ class HomeFragment : StdRowsFragment(), AudioEventListener {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		// Create adapter/presenter and set it to parent
-		mRowsAdapter = ArrayObjectAdapter(PositionableListRowPresenter())
-		mCardPresenter = CardPresenter()
+		mRowsAdapter = ArrayObjectAdapter(PositionableListRowPresenter(true))
+		mCardPresenter = CardPresenter(false, 246)
 		adapter = mRowsAdapter
 
 		super.onCreate(savedInstanceState)
