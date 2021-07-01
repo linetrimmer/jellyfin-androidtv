@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import org.jellyfin.androidtv.R;
 import org.jellyfin.androidtv.TvApp;
 import org.jellyfin.androidtv.data.model.ChapterItemInfo;
+import org.jellyfin.androidtv.preference.UserPreferences;
 import org.jellyfin.androidtv.ui.GridButton;
 import org.jellyfin.androidtv.util.ImageUtils;
 import org.jellyfin.androidtv.util.TimeUtils;
@@ -33,6 +34,7 @@ import java.util.Date;
 
 import kotlin.Lazy;
 
+import static org.koin.java.KoinJavaComponent.get;
 import static org.koin.java.KoinJavaComponent.inject;
 
 public class BaseRowItem {
@@ -257,7 +259,9 @@ public class BaseRowItem {
             case BaseItem:
             case LiveTvProgram:
             case LiveTvRecording:
-                return homeItem ? ImageUtils.getThumbImageUrl(context, baseItem, apiClient.getValue(), maxHeight)
+                return homeItem && get(UserPreferences.class).get(UserPreferences.Companion.getHomeThumbnailsEnabled())
+                    && getBaseItemType() != null && (getBaseItemType() == BaseItemType.Series || getBaseItemType() == BaseItemType.Movie)
+                    ? ImageUtils.getThumbImageUrl(context, baseItem, apiClient.getValue(), maxHeight)
                     : ImageUtils.getPrimaryImageUrl(context, baseItem, apiClient.getValue(), preferParentThumb, maxHeight);
             case Person:
                 return ImageUtils.getPrimaryImageUrl(person, apiClient.getValue(), maxHeight);
